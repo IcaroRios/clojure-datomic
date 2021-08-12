@@ -33,7 +33,7 @@
 
    ;CARTAO
    {:db/ident       :cartao/numero
-    :db/valueType   :db.type/string
+    :db/valueType   :db.type/long
     :db/cardinality :db.cardinality/one}
    {:db/ident       :cartao/cvv
     :db/valueType   :db.type/long
@@ -84,4 +84,27 @@
   (d/q '[:find (pull ?cliente [*])
          :where [?cliente :cliente/id]]
        db))
+
+(defn adiciona-cartoes! [conn cartoes]
+  (d/transact conn cartoes))
+
+
+(defn todas-os-cartoes [db]
+  (d/q '[:find (pull ?cartao [*])
+         :where [?cartao :cartao/id]]
+       db))
+
+
+(defn db-adds-de-atribuicao-de-cliente [cartoes cliente]
+  (reduce (fn [db-adds cartao] (conj db-adds [:db/add
+                                               [:cartao/id (:cartao/id cartao)]
+                                               :cartao/cliente
+                                               [:cliente/id (:cliente/id cliente)]]))
+          []
+          cartoes))
+
+
+(defn atribui-cartao! [conn cartoes cliente]
+  (let [a-transacionar (db-adds-de-atribuicao-de-cliente cartoes cliente)]
+    (d/transact conn a-transacionar)))
 

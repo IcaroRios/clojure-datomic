@@ -15,8 +15,10 @@
 
 (defn novo-cartao
   ([numero cvv validade limite]
-   {:cartao/id       (uuid)
-    :cartao/:numero  numero
+   (novo-cartao (uuid) numero cvv validade limite))
+  ([uuid numero cvv validade limite]
+   {:cartao/id       uuid
+    :cartao/numero  numero
     :cartao/cvv      cvv
     :cartao/validade validade
     :cartao/limite   limite

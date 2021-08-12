@@ -18,3 +18,12 @@
 
 (def clientes (db/todas-os-clientes (d/db conn)))
 (println clientes)
+
+(def cartao-icaro   (model/novo-cartao 5410133996442556, 984, #inst "2022-10-20", 10000M))
+(def cartao-nyelson (model/novo-cartao 545926820005900, 737,  #inst "2023-05-05", 10000M))
+
+(pprint @(db/adiciona-cartoes! conn [cartao-icaro, cartao-nyelson]))
+(db/atribui-cartao! conn [cartao-icaro] icaro)
+
+(def cartoes (db/todas-os-cartoes (d/db conn)))
+(println cartoes)
