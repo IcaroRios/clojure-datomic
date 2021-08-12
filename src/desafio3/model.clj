@@ -26,7 +26,9 @@
 
 (defn nova-compra
   ([data valor estabelecimento categoria]
-   {:compra/id              (uuid)
+   (nova-compra (uuid) data valor estabelecimento categoria ))
+  ([uuid data valor estabelecimento categoria]
+   {:compra/id              uuid
     :compra/data            data
     :compra/valor           valor
     :compra/estabelecimento estabelecimento
