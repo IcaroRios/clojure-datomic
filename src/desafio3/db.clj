@@ -101,9 +101,7 @@
   (let [a-transacionar (db-adds-de-atribuicao-de-cliente cartoes cliente)]
     (d/transact conn a-transacionar)))
 
-;--- compras
-(defn adiciona-compras! [conn compras]
-  (d/transact conn compras))
+
 
 (defn db-adds-de-atribuicao-de-cartao [compras cartao]
   (reduce (fn [db-adds compra] (conj db-adds [:db/add
@@ -118,16 +116,16 @@
   (let [a-transacionar (db-adds-de-atribuicao-de-cartao compras cartao)]
     (d/transact conn a-transacionar)))
 
+;--- compras
+(defn adiciona-compras! [conn compras cartao-icaro]
+  (d/transact conn compras)
+  (atribui-cartao! conn compras cartao-icaro)
+  )
+
 (defn todas-as-compras [db]
   (d/q '[:find (pull ?compra [*])
          :where [?compra :compra/id]]
        db))
-
-(defn compras-no-cartao [db, cartao-id]
-  (d/q '[:find (pull ?compra [*])
-         :in $ ?cartao
-         :where [?compra :compra/cartao ?cartao]]
-       db cartao-id))
 
 (defn compras-no-numero-cartao [db, numero-do-cartao]
   (d/q '[:find  (pull ?compra [*])
