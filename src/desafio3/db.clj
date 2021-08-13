@@ -122,13 +122,8 @@
   (atribui-cartao! conn compras cartao-icaro)
   )
 
-(defn todas-as-compras [db]
-  (d/q '[:find (pull ?compra [*])
-         :where [?compra :compra/id]]
-       db))
-
 (defn compras-no-numero-cartao [db, numero-do-cartao]
-  (d/q '[:find  (pull ?compra [*])
+  (d/q '[:find  (pull ?compra [* {:compra/cartao [*]}]) ; trazendo junto o cartao
          :in $ ?numero
          :where [?cartao :cartao/numero ?numero]
                 [?compra :compra/cartao ?cartao]

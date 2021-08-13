@@ -13,11 +13,11 @@
 
 (def nyelson (model/novo-cliente "Nyelson Barbosa", "22667862023", "nyelson.barbosa@nubank.com.br"))
 (def icaro (model/novo-cliente "Icaro Rios", "32257409000", "icaro.rios@nubank.com.br"))
+(def sem-venda (model/novo-cliente "Icaro Rios", "32257409000", "icaro.rios@nubank.com.br"))
 
-(db/adiciona-clientes! conn [icaro, nyelson])
+(db/adiciona-clientes! conn [icaro, nyelson, sem-venda])
 
-(def clientes (db/todas-os-clientes (d/db conn)))
-;(println clientes)
+(db/todas-os-clientes (d/db conn))
 
 (def cartao-icaro (model/novo-cartao 5410133996442556, 984, #inst "2022-10-20", 10000M))
 (def cartao-nyelson (model/novo-cartao 545926820005900, 737, #inst "2023-05-05", 10000M))
@@ -32,10 +32,11 @@
               (model/nova-compra #inst "2021-05-29", 300M, "Nike", "Vestuário")
               (model/nova-compra #inst "2021-12-30", 50M, "Cinemark", "Cinema")
               (model/nova-compra #inst "2021-12-27", 5M, "Padaria", "Alimentos")
-              (model/nova-compra #inst "2021-12-25", 70M, "Boliche", "Aleatório")
               ])
 
-(def compras-nyelson [(model/nova-compra #inst "2021-10-25", 100000M, "Hollister", "Vestuário")])
+(def compras-nyelson [(model/nova-compra #inst "2021-10-25", 100000M, "Hollister", "Vestuário")
+                      (model/nova-compra #inst "2021-12-25", 70M, "Boliche", "Aleatório")
+                      ])
 
 (db/adiciona-compras! conn compras cartao-icaro)
 
