@@ -25,9 +25,6 @@
 (pprint @(db/adiciona-cartoes! conn [cartao-icaro, cartao-nyelson]))
 (db/atribui-cliente! conn [cartao-icaro] icaro)
 
-(def cartoes (db/todas-os-cartoes (d/db conn)))
-(println cartoes)
-
 (def compras [
               (model/nova-compra #inst "2021-10-20", 1000M, "Adidas", "Vestuário")
               (model/nova-compra #inst "2021-10-21", 250M, "Adidas", "Vestuário")
@@ -38,9 +35,7 @@
               (model/nova-compra #inst "2021-12-25", 70M, "Boliche", "Aleatório")
               ])
 
-(def compras-nyelson [
-              (model/nova-compra #inst "2021-10-25", 100000M, "Hollister", "Vestuário")
-              ])
+(def compras-nyelson [(model/nova-compra #inst "2021-10-25", 100000M, "Hollister", "Vestuário")])
 
 (pprint @(db/adiciona-compras! conn compras))
 (db/atribui-cartao! conn compras cartao-icaro)
@@ -52,8 +47,9 @@
 (pprint (db/todas-as-compras (d/db conn)))
 
 (println "Compras de ícaro")
-(pprint (db/compras-no-cartao (d/db conn) 17592186045421 ))
+;(pprint (db/compras-no-cartao (d/db conn) 17592186045421 ))
+(pprint (db/compras-no-numero-cartao (d/db conn) (:cartao/numero cartao-icaro)))
 
 (println "Compras de Nyelson")
-(pprint (db/compras-no-cartao (d/db conn) 17592186045422 ))
+(pprint (db/compras-no-numero-cartao (d/db conn) (:cartao/numero cartao-nyelson)))
 

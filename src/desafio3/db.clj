@@ -90,9 +90,9 @@
 
 (defn db-adds-de-atribuicao-de-cliente [cartoes cliente]
   (reduce (fn [db-adds cartao] (conj db-adds [:db/add
-                                               [:cartao/id (:cartao/id cartao)]
-                                               :cartao/cliente
-                                               [:cliente/id (:cliente/id cliente)]]))
+                                              [:cartao/id (:cartao/id cartao)]
+                                              :cartao/cliente
+                                              [:cliente/id (:cliente/id cliente)]]))
           []
           cartoes))
 
@@ -128,3 +128,11 @@
          :in $ ?cartao
          :where [?compra :compra/cartao ?cartao]]
        db cartao-id))
+
+(defn compras-no-numero-cartao [db, numero-do-cartao]
+  (d/q '[:find  (pull ?compra [*])
+         :in $ ?numero
+         :where [?cartao :cartao/numero ?numero]
+                [?compra :compra/cartao ?cartao]
+         ]
+       db numero-do-cartao))
